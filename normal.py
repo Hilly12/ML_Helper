@@ -28,10 +28,12 @@ def normal(x, mean, stdev):
 
 # GME
 
+print("Expectation")
 xs = [5.92, 2.28, 3.85, 5.17, 1.75]
 pik = [0.5, 0.5]
 means = [3.34, 6.12]
 stds = [1, 1]
+rik = [[0] * len(pik) for i in xs]
 for i, xi in enumerate(xs):
     pkxi = []
     for k in range(len(pik)):
@@ -43,8 +45,35 @@ for i, xi in enumerate(xs):
     print(f"Σ πk pjx{i + 1} = {sm}")
     
     for k in range(len(pik)):
-        r = format((pik[k] * pkxi[k]) / sm, ".4f")
+        r = float(format((pik[k] * pkxi[k]) / sm, ".4f"))
+        rik[i][k] = r
         print(f"r{i + 1}{k + 1} = {r}")
+
+print("\nMaximisation")
+
+for k in range(len(pik)):
+    n = sum([rik[i][k] for i in range(len(xs))])
+    print(f"pi{k + 1} = {format(n, '0.4f')} / {len(xs)} = {format(n / len(xs), '0.4f')}")
+
+nmeans = []
+for k in range(len(pik)):
+    den = sum([rik[i][k] for i in range(len(xs))])
+    print(f"mean {k + 1} = 1/{format(den, '0.4f')}", end=' ')
+    num = 0
+    for i, x in enumerate(xs):
+        num += rik[i][k] * x
+    res = float(format(num / den, "0.4f"))
+    print(f"({format(num, '0.6f')}) = {res}")
+    nmeans.append(res)
+
+for k in range(len(pik)):
+    den = sum([rik[i][k] for i in range(len(xs))])
+    print(f"std {k + 1} = 1/{format(den, '0.4f')}", end=' ')
+    num = 0
+    for i, x in enumerate(xs):
+        num += rik[i][k] * ((x - nmeans[k]) ** 2)
+    res = float(format(num / den, "0.4f"))
+    print(f"({format(num, '0.6f')}) = {res}")
 
 print()
 
