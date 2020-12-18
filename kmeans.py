@@ -25,7 +25,7 @@ def kmeans(points, centroids, label_offset=1):
                 min_dist = d
                 index = i
         print(index + label_offset)
-        clusters[index].append(centroids[i])
+        clusters[index].append(p)
     print()
 
     updated_centroids = []
@@ -35,7 +35,7 @@ def kmeans(points, centroids, label_offset=1):
         for a, b in c:
             x += a
             y += b
-        cp = float(format(x / len(clusters), ".3f")), float(format(y / len(clusters), ".3f"))
+        cp = float(format(x / len(c), ".3f")), float(format(y / len(c), ".3f"))
         updated_centroids.append(cp)
 
     return updated_centroids, clusters
